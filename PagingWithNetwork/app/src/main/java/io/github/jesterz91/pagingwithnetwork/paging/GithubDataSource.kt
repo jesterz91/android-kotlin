@@ -16,29 +16,22 @@ class GithubDataSource(
     private val keyWord = "scyllaDB"
     private val firstPage = 1
 
-    // 초기 페이지 로드
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Repo>) {
-
         // parmas.requestedLoadSize 값은 pagedList.config 의 setInitialLoadSizeHint 설정 값
         info { "loadInitial - params.requestedLoadSize : ${params.requestedLoadSize}" }
 
         compositeDisposable.add(
             githubApi.searchRepos(keyWord, firstPage, params.requestedLoadSize)
                 .subscribe({
-
                     info { "total_count ${it.total_count}" }
-
                     callback.onResult(it.items, null, firstPage+1)
-
                 }, {
                     error { it.message }
                 })
         )
     }
 
-    // 다음 페이지 로딩
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Repo>) {
-
         // parmas.requestedLoadSize 값은 pagedList.config 의 setPageSize 설정 값
         info { "loadAfter - params(key, requestedLoadSize)  : (${params.key}, ${params.requestedLoadSize})" }
 
@@ -48,20 +41,15 @@ class GithubDataSource(
         compositeDisposable.add(
             githubApi.searchRepos(keyWord, params.key, params.requestedLoadSize)
                 .subscribe({
-
                     if (it.total_count > requestedItemCount) nextPageKey = params.key + 1
-
                     callback.onResult(it.items, nextPageKey)
-
                 }, {
                     error { it.message }
                 })
         )
     }
 
-    // 이전 페이지 로딩
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Repo>) {
-
         // parmas.requestedLoadSize 값은 pagedList.config 의 setPageSize 설정 값
         info { "loadBefore - params(key, requestedLoadSize)  : (${params.key}, ${params.requestedLoadSize})" }
 
@@ -70,11 +58,8 @@ class GithubDataSource(
         compositeDisposable.add(
             githubApi.searchRepos(keyWord, params.key, params.requestedLoadSize)
                 .subscribe({
-
                     if (params.key > firstPage) prevPagekey = params.key - 1
-
                     callback.onResult(it.items, prevPagekey)
-
                 }, {
                     error { it.message }
                 })
