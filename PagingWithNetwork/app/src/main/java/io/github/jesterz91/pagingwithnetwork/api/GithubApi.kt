@@ -1,6 +1,6 @@
 package io.github.jesterz91.pagingwithnetwork.api
 
-import retrofit2.Call
+import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -18,5 +18,5 @@ interface GithubApi {
         @Query("q") query: String,
         @Query("page") page: Int,
         @Query("per_page") perPage: Int
-    ): Call<RepoSearchResponse>
+    ): Single<RepoSearchResponse>
 }

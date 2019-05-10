@@ -5,6 +5,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 const val BASE_URL = "https://api.github.com/"
@@ -14,17 +15,18 @@ val apiModule = module {
     //Github APi
     single {
         Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(get())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-                .create(GithubApi::class.java)
+            .baseUrl(BASE_URL)
+            .client(get())
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build()
+            .create(GithubApi::class.java)
     }
 
     // OkHttpClient
     single {
         OkHttpClient.Builder()
-                .addInterceptor(get() as HttpLoggingInterceptor).build()
+            .addInterceptor(get() as HttpLoggingInterceptor).build()
     }
 
     // HttpLoggingInterceptor
