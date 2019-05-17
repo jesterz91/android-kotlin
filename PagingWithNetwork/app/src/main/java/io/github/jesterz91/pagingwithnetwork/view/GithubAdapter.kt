@@ -26,18 +26,18 @@ class GithubAdapter : PagedListAdapter<Repo, GithubAdapter.GithubViewHolder>(DIF
 
     inner class GithubViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val repo_name = itemView.findViewById<TextView>(R.id.repo_name)
-        val repo_description = itemView.findViewById<TextView>(R.id.repo_description)
-        val repo_language = itemView.findViewById<TextView>(R.id.repo_language)
-        val repo_stars = itemView.findViewById<TextView>(R.id.repo_stars)
-        val repo_forks = itemView.findViewById<TextView>(R.id.repo_forks)
+        private val name = itemView.findViewById<TextView>(R.id.repo_name)
+        private val description = itemView.findViewById<TextView>(R.id.repo_description)
+        private val language = itemView.findViewById<TextView>(R.id.repo_language)
+        private val stars = itemView.findViewById<TextView>(R.id.repo_stars)
+        private val forks = itemView.findViewById<TextView>(R.id.repo_forks)
 
         fun bindView(repo: Repo) {
-            repo_name.text = repo.name
-            repo_description.text = repo.description
-            repo_language.text = repo.language
-            repo_stars.text = repo.stargazers_count.toString()
-            repo_forks.text = repo.forks.toString()
+            name.text = repo.name
+            description.text = repo.description
+            language.text = repo.language
+            stars.text = repo.stargazers_count.toString()
+            forks.text = repo.forks.toString()
         }
     }
 

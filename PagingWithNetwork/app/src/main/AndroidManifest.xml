@@ -19,6 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".view.RedditActivity"
+            android:parentActivityName=".view.MainActivity" />
+        <activity
+            android:name=".view.GithubActivity"
+            android:parentActivityName=".view.MainActivity" />
     </application>
 
 </manifest>
