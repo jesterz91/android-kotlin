@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/wifiOn_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="와이파이 켜기"/>
+
+    <Button
+        android:id="@+id/wifiOff_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="와이파이 끄기"/>
+
+    <Button
+        android:id="@+id/wifiState_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="와이파이 상태"/>
+
+    <Button
+        android:id="@+id/wifiScan_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="와이파이 스캔"/>
+
+    <Button
+        android:id="@+id/wifiConnet_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="와이파이 연결하기"/>
+
+    <Button
+        android:id="@+id/wifiDisconnect_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="와이파이 연결끊기"/>
+
+    <Button
+        android:id="@+id/airplaneDetect_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="비행기 모드"/>
+
+    <Button
+        android:id="@+id/wifiMeasure_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="사용 데이터"/>
+
+    <Button
+        android:id="@+id/connected_info_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="연결된 와이파이"/>
+
+</LinearLayout>
