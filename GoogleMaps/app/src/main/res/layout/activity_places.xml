@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.PlacesActivity">
+
+    <Button
+        android:id="@+id/autocompletePlace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="장소검색" />
+
+    <Button
+        android:id="@+id/findCurrentPlace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="현재위치" />
+
+    <Button
+        android:id="@+id/fetchPlace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="장소 세부 정보" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+</LinearLayout>
