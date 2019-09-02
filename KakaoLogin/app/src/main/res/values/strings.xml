@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">KakaoLogin</string>
+    <string name="kakao_app_key">kakao_app_key</string>
+    <string name="kakao_client_secret">kakao_client_secret</string>
+</resources>
