@@ -21,7 +21,9 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
         Session.getCurrentSession().addCallback(kakaoCallback)
         Session.getCurrentSession().checkAndImplicitOpen()
 
-        login.setOnClickListener { login.performClick() }
+        kakaoLoginButton.setOnClickListener {
+            kakaoLoginButton.performClick()
+        }
     }
 
     override fun onDestroy() {
@@ -48,4 +50,3 @@ class LoginActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 }
-

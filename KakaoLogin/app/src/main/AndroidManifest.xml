@@ -20,11 +20,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoginActivity"/>
-        <!-- 카카오톡 앱키 -->
+        <!-- 카카오 앱키 -->
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
-        <!-- 카카오톡 클라이언트 시크릿 -->
+        <!-- 카카오 클라이언트 시크릿 -->
         <meta-data
             android:name="com.kakao.sdk.ClientSecret"
             android:value="@string/kakao_client_secret" />

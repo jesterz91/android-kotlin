@@ -19,12 +19,15 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        requestMe()
+        requestMe() // 사용자 정보 요쳥
 
         logoutButton.setOnClickListener { logout() }
         unlinkButton.setOnClickListener { unlink() }
     }
 
+    private fun redirectLoginActivity() = startActivity(intentFor<LoginActivity>().clearTask().newTask())
+
+    // 사용자 정보 요쳥
     private fun requestMe() {
         val keys = listOf("properties.nickname", "kakao_account.email", "properties.profile_image", "properties.thumbnail_image")
         UserManagement.getInstance().me(keys, object : MeV2ResponseCallback() {
@@ -37,48 +40,42 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
                 nameTextView.text = result.id.toString()
                 nickNameTextView.text = result.nickname
-                emailTextView.text = result.kakaoAccount.toString()
+                emailTextView.text = result.kakaoAccount.email
             }
 
             override fun onSessionClosed(errorResult: ErrorResult) {
-                // 로그인화면으로 이동
-                startActivity(intentFor<LoginActivity>().clearTask().newTask())
+                redirectLoginActivity()
             }
         })
     }
 
+    // 로그아웃
     private fun logout() {
         UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
             override fun onCompleteLogout() {
-                startActivity(intentFor<LoginActivity>().clearTask().newTask())
+                redirectLoginActivity()
             }
         })
     }
 
+    // 연동해제
     private fun unlink() {
-        alert("카카오 로그인 연동해제") {
-            yesButton {
-                UserManagement.getInstance().requestUnlink(object : UnLinkResponseCallback() {
-                    override fun onFailure(errorResult: ErrorResult?) {
-                        error { errorResult?.errorMessage }
-                    }
-
-                    override fun onSessionClosed(errorResult: ErrorResult) {
-                        startActivity(intentFor<LoginActivity>().clearTask().newTask())
-                    }
-
-                    override fun onNotSignedUp() {
-                        startActivity(intentFor<LoginActivity>().clearTask().newTask())
-                    }
-
-                    override fun onSuccess(userId: Long?) {
-                        startActivity(intentFor<LoginActivity>().clearTask().newTask())
-                    }
-                })
+        UserManagement.getInstance().requestUnlink(object : UnLinkResponseCallback() {
+            override fun onFailure(errorResult: ErrorResult?) {
+                error { errorResult?.errorMessage }
             }
-            noButton {
-                toast("취소")
+
+            override fun onSessionClosed(errorResult: ErrorResult) {
+                redirectLoginActivity()
             }
-        }.show()
+
+            override fun onNotSignedUp() {
+                redirectLoginActivity()
+            }
+
+            override fun onSuccess(userId: Long?) {
+                redirectLoginActivity()
+            }
+        })
     }
 }
