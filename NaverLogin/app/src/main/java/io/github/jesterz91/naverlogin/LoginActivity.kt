@@ -5,46 +5,33 @@ import androidx.appcompat.app.AppCompatActivity
 import com.nhn.android.naverlogin.OAuthLogin
 import com.nhn.android.naverlogin.OAuthLoginHandler
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
 import org.jetbrains.anko.*
 import java.lang.ref.WeakReference
-import kotlin.coroutines.CoroutineContext
 
-class LoginActivity : AppCompatActivity(), CoroutineScope, AnkoLogger {
+class LoginActivity : AppCompatActivity(), AnkoLogger {
 
-    private val loginJob = Job()
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + loginJob
-
-    private val mOAuthLoginModule = OAuthLogin.getInstance()
-    private val mOAuthLoginHandler = NaverLoginHandler(this)
+    private val naverLoginModule = OAuthLogin.getInstance()
+    private val naverLoginHandler = NaverLoginHandler(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        mOAuthLoginModule.init(this,
+        naverLoginModule.init(
+            this,
             BuildConfig.NAVER_CLIENT_ID,
             BuildConfig.NAVER_CLIENT_SECRET,
-            BuildConfig.NAVER_CLIENT_NAME)
+            BuildConfig.NAVER_CLIENT_NAME
+        )
 
-        naverLoginButton.setOAuthLoginHandler(mOAuthLoginHandler)
+        naverLoginButton.setOAuthLoginHandler(naverLoginHandler)
+
         naverLoginButton.setOnClickListener {
-            mOAuthLoginModule.startOauthLoginActivity(this, mOAuthLoginHandler)
+            naverLoginModule.startOauthLoginActivity(this, naverLoginHandler)
         }
     }
 
-    private fun redirectActivity() {
-        startActivity(intentFor<MainActivity>().clearTask().newTask())
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        loginJob.cancelChildren()
-    }
+    private fun redirectMainActivity() = startActivity(intentFor<MainActivity>().clearTask().newTask())
 
     companion object {
         class NaverLoginHandler(activity: LoginActivity) : OAuthLoginHandler() {
@@ -53,15 +40,14 @@ class LoginActivity : AppCompatActivity(), CoroutineScope, AnkoLogger {
 
             override fun run(success: Boolean) {
                 val loginActivity: LoginActivity? = mActivity.get()
-
+                // 로그인 성공여부
                 if (success) {
-                    loginActivity?.redirectActivity()
+                    loginActivity?.redirectMainActivity()
                 } else {
-                    loginActivity?.mOAuthLoginModule?.run {
-                        val errorCode = getLastErrorCode(loginActivity).code
-                        val errorDesc = getLastErrorDesc(loginActivity)
-                        loginActivity.error { errorCode }
-                        loginActivity.error { errorDesc }
+                    loginActivity?.naverLoginModule?.run {
+                        // 에러 로그
+                        loginActivity.error { "ErrorCode : ${getLastErrorCode(loginActivity).code}" }
+                        loginActivity.error { "ErrorDesc : ${getLastErrorDesc(loginActivity)}" }
                     }
                 }
             }

@@ -18,13 +18,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope, AnkoLogger {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + mainJob
 
-    private val mOAuthLogin = OAuthLogin.getInstance()
-    private val mOAuthLoginModule = OAuthLogin.getInstance()
+    private val naverLoginModule = OAuthLogin.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // 로그인 상태 확인
         if (!checkLoginState()) {
             startActivity(intentFor<LoginActivity>().clearTask().newTask())
             return
@@ -36,8 +36,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope, AnkoLogger {
 
     // 네이버 로그인 상태 확인
     private fun checkLoginState(): Boolean {
-        if (mOAuthLogin.getState(this) === OAuthLoginState.OK) {
-            val accessToken = mOAuthLogin.getAccessToken(this)
+        if (naverLoginModule.getState(this) === OAuthLoginState.OK) {
+            val accessToken = naverLoginModule.getAccessToken(this)
             requestUserInfo(accessToken)
             return true
         }
@@ -46,37 +46,38 @@ class MainActivity : AppCompatActivity(), CoroutineScope, AnkoLogger {
 
     private fun requestUserInfo(accessToken: String) = launch(Dispatchers.IO) {
         // 네이버 액세스 토큰으로 네이버 API 에 접근하여 사용자 정보를 가져옴
-        val response = mOAuthLogin.requestApi(this@MainActivity, accessToken, "https://openapi.naver.com/v1/nid/me")
-        val loginRes = Gson().fromJson(response, NaverLoginResponse::class.java)
+        val url = "https://openapi.naver.com/v1/nid/me"
+        val response = naverLoginModule.requestApi(this@MainActivity, accessToken, url)
+        val naverLogin = Gson().fromJson(response, NaverLogin::class.java)
 
         withContext(Dispatchers.Main) {
-            loginRes.response.let {
+            naverLogin.response.let { naverUser ->
 
                 Glide.with(this@MainActivity)
-                    .load(it.profile_image)
+                    .load(naverUser.profile_image)
                     .apply(RequestOptions.circleCropTransform())
                     .into(imageView)
 
-                nameTextView.text = it.name
-                nickNameTextView.text = it.nickname
-                emailTextView.text = it.email
+                nameTextView.text = naverUser.name
+                nickNameTextView.text = naverUser.nickname
+                emailTextView.text = naverUser.email
             }
         }
     }
 
     private fun logout() {
-        mOAuthLoginModule.logout(this)
+        naverLoginModule.logout(this)
         startActivity(intentFor<LoginActivity>().clearTask().newTask())
     }
 
     private fun unlink() = launch(Dispatchers.IO) {
-        val isSuccessDeleteToken = mOAuthLoginModule.logoutAndDeleteToken(this@MainActivity)
+        val isSuccessDeleteToken = naverLoginModule.logoutAndDeleteToken(this@MainActivity)
 
         if (isSuccessDeleteToken) {
             startActivity(intentFor<LoginActivity>().clearTask().newTask())
         } else {
-            error { mOAuthLoginModule.getLastErrorCode(this@MainActivity) }
-            error { mOAuthLoginModule.getLastErrorDesc(this@MainActivity) }
+            error { "ErrorCode : ${naverLoginModule.getLastErrorCode(this@MainActivity).code}" }
+            error { "ErrorDesc : ${naverLoginModule.getLastErrorDesc(this@MainActivity)}" }
         }
     }
 

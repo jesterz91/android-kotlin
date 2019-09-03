@@ -1,12 +1,12 @@
 package io.github.jesterz91.naverlogin
 
-data class NaverLoginResponse(
+data class NaverLogin(
     val message: String,
-    val response: Response,
+    val response: NaverUser,
     val resultcode: String
 )
 
-data class Response(
+data class NaverUser(
     val id: String,
     val name: String,
     val nickname: String,
