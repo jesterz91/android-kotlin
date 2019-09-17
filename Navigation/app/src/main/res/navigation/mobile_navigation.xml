@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="io.github.jesterz91.navigation.fragment.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_flowStepOneFragment"
+            app:destination="@id/flowStepOneFragment" />
+
+        <action
+            android:id="@+id/settings_dest"
+            app:destination="@id/settingsFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/flowStepOneFragment"
+        android:name="io.github.jesterz91.navigation.fragment.FlowStepFragment"
+        android:label="Flow One"
+        tools:layout="@layout/fragment_flow_one">
+        <action
+            android:id="@+id/action_flowStepOneFragment_to_flowStepTwoFragment"
+            app:destination="@id/flowStepTwoFragment" />
+
+        <argument
+            android:name="flowStepNumber"
+            android:defaultValue="1"
+            app:argType="integer" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/flowStepTwoFragment"
+        android:name="io.github.jesterz91.navigation.fragment.FlowStepFragment"
+        android:label="Flow Two"
+        tools:layout="@layout/fragment_flow_two">
+        <action
+            android:id="@+id/action_flowStepTwoFragment_to_homeFragment"
+            app:popUpTo="@id/homeFragment" />
+
+        <argument
+            android:name="flowStepNumber"
+            android:defaultValue="2"
+            app:argType="integer" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="io.github.jesterz91.navigation.fragment.SettingsFragment"
+        android:label="Setting"
+        tools:layout="@layout/fragment_settings" />
+
+</navigation>
